@@ -1,0 +1,13 @@
+PostgresServer = "localhost"
+PostgresPort = 5432
+PostgresUser = "root"
+PostgresPassword = "root"
+PostgresDatabase = "postgres"
+#PostgresDBType = "postgres"
+
+
+
+
+
+
+

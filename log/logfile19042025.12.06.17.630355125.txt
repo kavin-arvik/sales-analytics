@@ -1,0 +1,153 @@
+2025/04/19 12:06:17 DBtype POSTGRES
+2025/04/19 12:06:17 IN postgres
+2025/04/19 12:06:17 postgres localDBtype
+2025/04/19 12:06:29 r.Method  -  GET
+2025/04/19 12:06:29 TopNProducts + 
+2025/04/19 12:06:29 TopSaleDateRange + 
+2025/04/19 12:06:29 getDateRange + 
+2025/04/19 12:06:29 getDateRange - 
+2025/04/19 12:06:29 lSelectString -  
+				select *
+			from (select p."name", sum(quantity) quantity
+					from order_items oi, products p, orders o 
+					where oi.product_id = p.id and o.id = oi.order_id
+					and o.date_of_sale BETWEEN $1 AND $2
+					group by p."name" ) t
+					order by t.quantity desc
+					limit 2
+2025/04/19 12:06:29 TopSaleDateRange - 
+2025/04/19 12:06:29 TopNProducts - 
+2025/04/19 12:07:59 r.Method  -  GET
+2025/04/19 12:07:59 TopNProducts + 
+2025/04/19 12:07:59 TopSaleCategory + 
+2025/04/19 12:07:59 getDateRange + 
+2025/04/19 12:07:59 getDateRange - 
+2025/04/19 12:07:59 lSelectString -  
+					select *
+				from (select p.category, sum(quantity) quantity
+						from order_items oi, products p, orders o 
+						where oi.product_id = p.id and o.id = oi.order_id
+						and o.date_of_sale BETWEEN $1 AND $2
+						group by p.category ) t
+						order by t.quantity desc
+					limit 2
+2025/04/19 12:07:59 TopSaleCategory - 
+2025/04/19 12:07:59 TopNProducts - 
+2025/04/19 12:09:31 r.Method  -  GET
+2025/04/19 12:09:31 TopNProducts + 
+2025/04/19 12:09:31 TopSaleRegion + 
+2025/04/19 12:09:31 getDateRange + 
+2025/04/19 12:09:31 getDateRange - 
+2025/04/19 12:09:31 lSelectString -  
+					select *
+					from (select o.region, sum(quantity) quantity
+					from order_items oi , orders o 
+					where oi.order_id = o.id and o.date_of_sale BETWEEN $1 AND $2
+					group by o.region) t
+					order by t.quantity desc
+					limit 2
+2025/04/19 12:09:31 TopSaleRegion - 
+2025/04/19 12:09:31 TopNProducts - 
+2025/04/19 12:10:38 r.Method  -  GET
+2025/04/19 12:10:38 CustomerAnalysis + 
+2025/04/19 12:10:38 TopSaleDateRange + 
+2025/04/19 12:10:38 getDateRange + 
+2025/04/19 12:10:38 getDateRange - 
+2025/04/19 12:10:38 lSelectString -  
+				select count(*) 
+				from orders o, order_items oi 
+				where o.id = oi.order_id
+				and o.date_of_sale BETWEEN $1 AND $2
+2025/04/19 12:10:38 TopSaleDateRange - 
+2025/04/19 12:10:38 CustomerAnalysis - 
+2025/04/19 12:12:01 r.Method  -  GET
+2025/04/19 12:12:01 CustomerAnalysis + 
+2025/04/19 12:12:01 TotOrders + 
+2025/04/19 12:12:01 getDateRange + 
+2025/04/19 12:12:01 getDateRange - 
+2025/04/19 12:12:01 lSelectString -  
+				select count(*) from orders o, order_items oi 
+				where o.id = oi.order_id
+				and o.date_of_sale BETWEEN $1 AND $2
+2025/04/19 12:12:01 TotOrders - 
+2025/04/19 12:12:01 CustomerAnalysis - 
+2025/04/19 12:13:36 r.Method  -  GET
+2025/04/19 12:13:36 CustomerAnalysis + 
+2025/04/19 12:13:36 TotAvgOrdValue + 
+2025/04/19 12:13:36 getDateRange + 
+2025/04/19 12:13:36 getDateRange - 
+2025/04/19 12:13:36 lSelectString -  
+				SELECT ROUND(AVG(order_total), 2) AS average_order_value
+				FROM (
+					SELECT o.id, 
+						SUM((oi.quantity * oi.unit_price) + oi.discount + oi.shipping_cost) AS order_total
+					FROM orders o
+					JOIN order_items oi ON o.id = oi.order_id
+				WHERE o.date_of_sale BETWEEN $1 AND $2
+					GROUP BY o.id
+				) AS order_totals;
+2025/04/19 12:13:36 TotAvgOrdValue - 
+2025/04/19 12:13:36 CustomerAnalysis - 
+2025/04/19 12:15:42 r.Method  -  GET
+2025/04/19 12:15:42 SalesCalculations + 
+2025/04/19 12:15:42 ProfitMargin + 
+2025/04/19 12:15:42 getDateRange + 
+2025/04/19 12:15:42 getDateRange - 
+2025/04/19 12:15:42 lSelectString -  
+				SELECT 
+				p.name,
+				ROUND(
+					(
+						SUM((oi.unit_price * oi.quantity) - (oi.discount + oi.shipping_cost)) 
+						/ NULLIF(SUM(oi.unit_price * oi.quantity), 0)
+					) * 100, 
+					2
+				) AS profit_margin_percentage
+			FROM 
+				orders o, order_items oi, products p
+			WHERE o.id = oi.order_id and p.id = oi.product_id
+				and o.date_of_sale BETWEEN $1 AND $2
+			GROUP BY 
+				oi.product_id, p."name";
+2025/04/19 12:15:42 ProfitMargin - 
+2025/04/19 12:15:42 SalesCalculations - 
+2025/04/19 12:17:05 r.Method  -  GET
+2025/04/19 12:17:05 SalesCalculations + 
+2025/04/19 12:17:05 clv + 
+2025/04/19 12:17:05 getDateRange + 
+2025/04/19 12:17:05 getDateRange - 
+2025/04/19 12:17:05 clv - 
+2025/04/19 12:17:05 SalesCalculations - 
+2025/04/19 12:19:00 r.Method  -  GET
+2025/04/19 12:19:00 SalesCalculations + 
+2025/04/19 12:19:00 customerSeg + 
+2025/04/19 12:19:00 getDateRange + 
+2025/04/19 12:19:00 getDateRange - 
+2025/04/19 12:19:00 customerSeg - 
+2025/04/19 12:19:00 SalesCalculations - 
+2025/04/19 12:19:44 RefreshSalesData + 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 selectIds + 
+2025/04/19 12:19:44 selectIds - 
+2025/04/19 12:19:44 RefreshSalesData - 

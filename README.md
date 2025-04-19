@@ -40,6 +40,9 @@ go run main.go
 
 App will start on: `http://localhost:8080`
 
+## 4. LOG file 
+To track execution flow and for debugging purpose, the application generates logs during runtime.
+LOCATION : log/logfile19042025.12.20.03.610924298.txt
 
 ## CSV Upload
 

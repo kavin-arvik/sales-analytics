@@ -14,8 +14,7 @@ Provides APIs for analyzing revenue, customer segmentation, profit margins, and 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/sales-analytics/sales-analytics.git
-cd sales-analytics/SalesAnalytics
+git clone https://github.com/kavin-arvik/sales-analytics.git
 ```
 
 ### 2. Configure the Database

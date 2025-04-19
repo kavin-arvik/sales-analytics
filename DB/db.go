@@ -49,11 +49,11 @@ func LocalDbConnect(DBtype string) (*sql.DB, error) {
 	// Prepare connection string
 	if localDBtype == "postgres" {
 		log.Println("IN", localDBtype)
-		connString = `user=` + dataBaseConnection.User + ` password=` + dataBaseConnection.Password + ` dbname=` + dataBaseConnection.Database + ` host=` + dataBaseConnection.Server + ` sslmode=disable`
+		connString = `user=` + dataBaseConnection.User + ` password=` + dataBaseConnection.Password + ` port=` + fmt.Sprintf("%v", dataBaseConnection.Port) + ` dbname=` + dataBaseConnection.Database + ` host=` + dataBaseConnection.Server + ` sslmode=disable`
 	}
 
 	log.Println(localDBtype, "localDBtype")
-
+	log.Println("connString - ", connString)
 	//make a connection to db
 	if localDBtype != "" {
 		db, err = sql.Open(localDBtype, connString)

@@ -19,7 +19,7 @@ git clone https://github.com/kavin-arvik/sales-analytics.git
 
 ### 2. Configure the Database
 
-Update `dbconfig.toml` with your PostgreSQL credentials:
+Update `dbconfig.toml` with your PostgreSQL credentials:    
 
 ```toml
 [database]

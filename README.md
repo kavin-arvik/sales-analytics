@@ -46,7 +46,7 @@ LOCATION : log/logfile19042025.12.20.03.610924298.txt
 
 ## CSV Upload
 
-Place your sales CSV file in the `data/` directory. The system loads it automatically when the application starts or when a refresh is triggered.
+Place your sales CSV file in the `data/` directory. The system loads it automatically on everyday 6am or when a refresh API is triggered.
 
 
 
@@ -80,12 +80,11 @@ Place your sales CSV file in the `data/` directory. The system loads it automati
 ## Logging
 Data refresh attempts and their status are logged in the `refresh_logs` table.
 
-```sql
-SELECT * FROM refresh_logs ORDER BY timestamp DESC;
-```
-
 ## Database details in separate file
 database_schema.sql
+
+## Schema diagram details in separate file
+Schema_diagram.pdf (or) Schema_diagram.png
 
 ## Author
 Maintained by [Kavin kishore.S]. 
@@ -345,6 +344,7 @@ http://localhost:8080/api/customers/dateRange?start=2024-01-03&end=2024-02-28
         "total_customers": 2
     }
 }
+```
 
 **Sample Response** (error):
 ```json
@@ -372,6 +372,7 @@ http://localhost:8080/api/customers/orders?start=2024-01-03&end=2024-02-28
         "total_orders": 2
     }
 }
+```
 
 **Sample Response** (error):
 ```json
@@ -399,6 +400,7 @@ http://localhost:8080/api/customers/avgOrderValue?start=2024-01-03&end=2024-02-2
         "avg_order_value": 749.59
     }
 }
+```
 
 **Sample Response** (error):
 ```json
